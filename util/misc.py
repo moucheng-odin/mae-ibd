@@ -18,8 +18,19 @@ from pathlib import Path
 
 import torch
 import torch.distributed as dist
-from torch._six import inf
+# from torch._six import inf
 
+from torch import inf
+
+# import  torch
+
+# TORCH_MAJOR = int(torch.__version__.split('.')[0])
+# TORCH_MINOR = int(torch.__version__.split('.')[1])
+
+# if TORCH_MAJOR == 1 and TORCH_MINOR < 8:
+#     from torch._six import inf
+# # else:
+# #     import math.inf as inf
 
 class SmoothedValue(object):
     """Track a series of values and provide access to smoothed values over a
@@ -214,7 +225,8 @@ def save_on_master(*args, **kwargs):
 
 
 def init_distributed_mode(args):
-    if args.dist_on_itp:
+    # if args.dist_on_itp:
+    if args["dist_on_itp"] and args["dist_on_itp"] == True:
         args.rank = int(os.environ['OMPI_COMM_WORLD_RANK'])
         args.world_size = int(os.environ['OMPI_COMM_WORLD_SIZE'])
         args.gpu = int(os.environ['OMPI_COMM_WORLD_LOCAL_RANK'])
@@ -233,7 +245,8 @@ def init_distributed_mode(args):
     else:
         print('Not using distributed mode')
         setup_for_distributed(is_master=True)  # hack
-        args.distributed = False
+        # args.distributed = False
+        args["distributed"] = False
         return
 
     args.distributed = True
@@ -313,7 +326,8 @@ def save_model(args, epoch, model, model_without_ddp, optimizer, loss_scaler):
 
 
 def load_model(args, model_without_ddp, optimizer, loss_scaler):
-    if args.resume:
+    # if args.resume:
+    if args["resume"]:
         if args.resume.startswith('https'):
             checkpoint = torch.hub.load_state_dict_from_url(
                 args.resume, map_location='cpu', check_hash=True)

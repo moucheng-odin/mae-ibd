@@ -1,0 +1,52 @@
+# Experiment folder:
+dir_output: /mount/ssd/xmoucheng/results/pretrain/mae/vit_large/split27
+
+# Experiment information:
+clearml_project_name: "MAE pretraining"
+clearml_task_name: "split 27 train pretrain"  # Describe your experiment concisely here.
+clearml_queue_name: Azure-4CPU-28GB-1xT4 # Azure-4CPU-28GB-1xT4, Azure-6CPU-112GB-1xV100, Azure-36CPU-440GB-1xA10
+# Environment information (you probably don't need to change these)
+clearml_docker_image: odinvisionml.azurecr.io/ml-docker-image:1.1.1
+clearml_requirements: ./requirements.txt
+clearml_docker_bash_setup_script: ./clearml_docker_bash_setup_script.sh
+
+
+# Model:
+batch_size: 16
+epochs: 400
+accm_iter: 1
+model: mae_vit_large_patch16
+input_size: 224
+mask_ratio: 0.75
+norm_pix_loss: False
+weight_decay: 0.05
+lr: # default None, otherwise float
+blr: 1e-03
+min_lr: 0
+warmup_epochs: 40
+accum_iter: 1
+
+# Data:
+data_path: /mount/ssd_sdd/Data/Pollux/data_split/Mayo/all_matching_frames_v4_2024_01_12/manual_split_total/split27
+output_dir: ./output_dir
+log_dir: ./output_dir
+device: cuda
+seed: 0
+resume:
+
+start_epoch: 0
+num_workers: 4
+pin_mem: True
+# no_pin_mem:
+
+# Distributed training:
+dist_on_itp: False
+distributed: False
+world_size: 1
+local_rank: -1
+dist_url: env://
+
+
+
+
+
